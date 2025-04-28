@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
     try{
-        await mongoose.connect("mongodb+srv://pascualfelicio:Felicio_44742@taskmanagerapi.luzjxt4.mongodb.net/")
+        await mongoose.connect("mongodb+srv://pascualfelicio:glv0BUAAGgXnpiOn@taskmanagerapi.luzjxt4.mongodb.net/")
+        console.log('connected on DC')
     } catch (error) {
         console.log(error)
     }
