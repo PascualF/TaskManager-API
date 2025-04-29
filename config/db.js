@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+require('dotenv').config()
 
 const connectDB = async () => {
     try{
-        await mongoose.connect("mongodb+srv://pascualfelicio:glv0BUAAGgXnpiOn@taskmanagerapi.luzjxt4.mongodb.net/")
-        console.log('connected on DC')
+        await mongoose.connect(process.env.ATLAS_PW)
+        console.log('connected to mongoDB')
     } catch (error) {
         console.log(error)
     }

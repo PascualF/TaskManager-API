@@ -4,7 +4,7 @@ const router = express.Router();
 const {
     getAllTasks,
     getSpecificTask
-} = require('../controllers/tasks.js')
+} = require('../controllers/tasksController.js')
 
 router.get('/tasks', getAllTasks)
 

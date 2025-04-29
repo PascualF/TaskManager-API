@@ -1,0 +1,64 @@
+body{
+    box-sizing: border-box;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+header{
+    border: 1px solid black;
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+header h1{
+    margin-left: 20px;
+}
+
+.container{
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+nav{
+    margin-left: 20px;
+    width: 200px;
+}
+
+.sidebar{
+    list-style: none;
+    padding: 0;
+    border: 1px solid black;
+}
+
+.sidebar li{
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+main{
+    margin-left: 20px;
+    border: 1px solid black;
+    margin-top: 15px;
+}
+
+svg{
+    width: 30px;
+}
+
+.task-card{
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
