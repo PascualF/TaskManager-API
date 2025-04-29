@@ -25,19 +25,36 @@ header h1{
 
 .container{
     display: flex;
-    flex: 1;
-    overflow: hidden;
+    flex: 1; /* This makes if fill the remaining space under the header */
+    overflow: hidden; /* Prevent overflow issues (scrollbars) */
 }
 
 nav{
     margin-left: 20px;
+    background:  #f3f3f3;
     width: 200px;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+    overflow-y: auto; /* Scrollable if content overflows */
+    border: 1px solid black;
+}
+
+main{
+    flex: 1;
+    margin-left: 20px;
+    margin-right: 20px;
+    height: 100%;
+    overflow-y: auto; /* Scrollable if content overflows */
+    border: 1px solid black;
 }
 
 .sidebar{
     list-style: none;
     padding: 0;
-    border: 1px solid black;
+}
+
+li{
+    list-style: none;
 }
 
 .sidebar li{
@@ -45,14 +62,12 @@ nav{
     cursor: pointer;
 }
 
-main{
-    margin-left: 20px;
-    border: 1px solid black;
-    margin-top: 15px;
-}
-
 svg{
     width: 30px;
+}
+
+#task-list{
+    padding-left: 10px;
 }
 
 .task-card{
