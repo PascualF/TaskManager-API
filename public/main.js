@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
     fetch("/tasks")
         .then(response => response.json())

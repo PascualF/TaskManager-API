@@ -7,4 +7,4 @@ const {
 
 router.get('/user', getUser)
 
-module.exports = router
+module.exports = router;

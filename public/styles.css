@@ -78,9 +78,16 @@ li{
     list-style: none;
 }
 
+.sidebar{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .sidebar li{
-    margin: 10px 0;
     cursor: pointer;
+    margin-top: 10px;
 }
 
 svg{
