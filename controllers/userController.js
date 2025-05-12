@@ -1,13 +1,8 @@
-const Task = require('../models/Task')
+const User = require('../models/User')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
-const getUser = async (req, res) => {
-    try {
-        res.send('User being updated')
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-module.exports = {
-    getUser
+const register = async (req, res) => {
+    const user = await User.create(req.body); // Name, email and password (hashed)
+    const token = jwt.sign(name, process.env.TOKEN_SECRET)
 }
