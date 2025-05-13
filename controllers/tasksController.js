@@ -45,7 +45,7 @@ const deleteTask = async(req, res) => {
         const taskDelete = await Task.deleteOne({ "_id": id})
         res.status(200).json({ taskDelete })
     } catch (error) {
-        res.status(404).json({msg: 'Task not found'})
+        console.log(error)
     }
 }
 
@@ -56,12 +56,19 @@ const updateTask = async (req, res) => {
             new: true,
             runValidators: true
         })
-        console.log(req.body)
-        res.status(200).json({taskUpdate})
+
+        if(!taskUpdate) {
+            // When not     
+            return res.status(404).json({ msg: 'Task not found '}) 
+        }
+
+        res.status(200).json({ taskUpdate })
     } catch (error) {
         console.log(error)
     }
 }
+
+// The auth is verified in the route.
 
 module.exports = {
     getAllTasks,

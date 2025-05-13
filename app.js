@@ -10,11 +10,15 @@ connectDB()
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json()) // handles incomming JSON data
 
+app.use('/users', userRoutes)
 app.use('/', tasksRoutes)
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "app.html"))
 })
+
+
+
 // Port to be used, will be handled in .env
 const port = process.env.PORT || 3000
 app.listen(port, () => {

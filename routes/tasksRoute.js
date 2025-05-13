@@ -9,6 +9,7 @@ const {
     deleteTask
 } = require('../controllers/tasksController.js')
 
+// This 
 const authMiddleware = require('../middleware/auth')
 
 router.use(authMiddleware)
