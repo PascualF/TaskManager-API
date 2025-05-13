@@ -1,4 +1,3 @@
-const { connect } = require('mongoose')
 const Task = require('../models/Task')
 
 const getAllTasks = async (req, res) => {
@@ -46,7 +45,7 @@ const deleteTask = async(req, res) => {
         const taskDelete = await Task.deleteOne({ "_id": id})
         res.status(200).json({ taskDelete })
     } catch (error) {
-        console.log(error)
+        res.status(404).json({msg: 'Task not found'})
     }
 }
 

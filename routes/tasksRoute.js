@@ -9,14 +9,11 @@ const {
     deleteTask
 } = require('../controllers/tasksController.js')
 
-router.get('/tasks', getAllTasks)
+const authMiddleware = require('../middleware/auth')
 
-router.get('/tasks/:taskID', getSpecificTask)
+router.use(authMiddleware)
 
-router.post('/tasks', insertNewTask) // Sending back to Homepage
-
-router.patch('/tasks/:taskID', updateTask)
-
-router.delete('/tasks/:taskID', deleteTask)
+router.route('/tasks').get(getAllTasks).post(insertNewTask)
+router.route('/tasks/:taskID').get(getSpecificTask).patch(updateTask).delete(deleteTask)
 
 module.exports = router
