@@ -24,7 +24,7 @@ if(registerFormElement) {
         const result = await response.json()
         if(response.ok) {
             alert("Registered successfully!")
-            window.location.href = `${linkConnection}/tasks`
+            window.location.href = `/app.html`
         } else {
             alert(result.msg || "Something went wrong")
         }
@@ -55,7 +55,7 @@ if(loginFormElement) {
             if(response.ok) {
                 localStorage.setItem("token", result.token)
                 alert("Login successfully!")
-                window.location.href = `${linkConnection}/tasks`
+                window.location.href = `/app.html`
             } else {
                 alert(result.msg || "Something went wrong")
             }

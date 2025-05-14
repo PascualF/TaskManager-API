@@ -1,17 +1,17 @@
-const { link } = require("../routes/userRoute")
 
-const token = localStorage.getItem("token")
-const linkConnection = 'http://localhost:3000'
 
 
 document.addEventListener("DOMContentLoaded", () => {
+    const token = localStorage.getItem("token")
+    const linkConnection = 'http://localhost:3000'
+
     if(!token) {
         alert("You must log in first.");
         window.location.href = `/login.html`;
         return 
     }
 
-    fetch("/tasks", {
+    fetch(`${linkConnection}/tasks`, {
         method: "GET",
         header: {
             "Authorization": `Bearer ${token}`, // The token is sent here.
