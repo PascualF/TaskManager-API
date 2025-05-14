@@ -2,17 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const token = localStorage.getItem("token")
     const linkConnection = 'http://localhost:3000'
 
-    console.log("Token from localStorage:", token); // Debugging line
-
     if(!token) {
         console.log('No token found, redirecting to login');
         alert("You must log in first.");
         window.location.href = `login.html`;
         return
     }
-
-    // Debug the headers being sent
-    console.log("Authorization header being sent:", `Bearer ${token}`);
 
     fetch(`${linkConnection}/tasks`, {
         method: "GET",
@@ -30,15 +25,20 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then((tasks) => {
             const listElement = document.getElementById("task-grid")
-            
-            tasks.forEach((task) => {
+            if(tasks.length > 0) {
+                tasks.forEach((task) => {
                 console.log(task)
                 const liItem = document.createElement("li");
                 liItem.textContent = task.title;
                 liItem.classList.add("task-card")
                 listElement.appendChild(liItem)
-            })
-
+                })
+            } else {
+                const noTasksAvailable = document.createElement("h2")
+                noTasksAvailable.textContent = 'Create some tasks...'
+                listElement.appendChild(noTasksAvailable)
+            }
+        
         })
         .catch(error => {
             console.error(`Error fetching tasks: ${error}`)
