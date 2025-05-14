@@ -8,18 +8,18 @@ TaskManagerAPI is a lightweight, responsive task management tool designed for ev
 
 ## Features
 
-- 📋 Display tasks dynamically from a backend
-- 📅 Categorize tasks by type (e.g., upcoming, today, important)
-- 🧼 Clean and responsive UI (mobile-friendly)
-- 🔄 Fetch tasks from a simple REST API
-- 💾 Easily extensible with localStorage or database support
+- Display tasks dynamically from a backend
+- Categorize tasks by type (e.g., upcoming, today, important)
+- Clean and responsive UI (mobile-friendly)
+- Fetch tasks from a simple REST API
+- Easily extensible with localStorage or database support
 
 ## Tech Stack
 
 | Layer        | Technology     |
 |--------------|----------------|
 | Frontend     | HTML, CSS, JavaScript (Vanilla) |
-| Backend      | Node.js (Express.js for API) *(optional)* |
+| Backend      | Node.js (Express.js for API) |
 | Icons        | Heroicons / SVG |
 | Future Plans | LocalStorage, Database, Auth, Filters |
 
