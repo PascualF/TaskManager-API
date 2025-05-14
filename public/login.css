@@ -1,0 +1,34 @@
+html, body{
+    font-family: 'Inter', sans-serif;
+}
+
+body{
+    background-color: #4a90e2;
+}
+
+.container-login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 150px;
+    overflow: hidden;
+}
+
+.cont-form{
+    display: flex;
+    flex-direction: column;
+}
+
+input{
+    margin-bottom: 8px;
+    border-radius: 5px;
+    width: 230px;
+    height: 25px;
+}
+
+button{
+    border-radius: 5px;
+    width: 235px;
+    height: 25px;
+}

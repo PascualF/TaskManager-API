@@ -11,8 +11,6 @@ const authMiddleware = async (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1]; // This extracts the token from 'Bearer tzetryezrvebb....'
-    const payloadChekc = jwt.verify(token, JWT_TOKEN);
-    console.log(payloadChekc)
     try {
         const payload = jwt.verify(token, JWT_TOKEN);
         req.user = {userId: payload.userId};

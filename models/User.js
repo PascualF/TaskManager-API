@@ -24,8 +24,11 @@ const userSchema = new Schema({
 
 // Hash the password before saving - .pre() means it will run this function before aby saving or creation.
 userSchema.pre('save', async function() {
+    // Checks if THIS document (user) about to be saved had the password modified, or not.
+    if (!this.isModified('password')) return // If password not changed, no hashing.
     const salt = await bcrypt.genSalt(10); // 10 rounds standar to hash tje password stronger.
-    const hash = await bcrypt.hash(this.password, salt) // this will hash with the password from the user on the schema, using the salt.
+    this.password = await bcrypt.hash(this.password, salt) // this will hash with the password from the user on the schema, using the salt.
+
 })
 
 // Compare password method to each user - when user log, it compares password.

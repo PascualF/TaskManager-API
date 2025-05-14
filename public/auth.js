@@ -1,0 +1,67 @@
+const registerFormElement = document.querySelector("#register-form");
+const loginFormElement = document.querySelector("#login-form");
+const linkConnection = 'http://localhost:3000'
+
+if(registerFormElement) {
+    registerFormElement.addEventListener("submit", async (e) => {
+    e.preventDefault(); // prevent automatic refresh
+
+    // Gets the value of each input when submitting
+    const registerFormData = {
+        name : document.querySelector("#name").value,
+        email : document.querySelector("#email").value,
+        password : document.querySelector("#password").value
+    }
+
+    try {
+        // Sending to the backend. to register new user, including the header for token checking.
+        const response = await fetch(`${linkConnection}/users/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(registerFormData)
+        })
+
+        const result = await response.json()
+        if(response.ok) {
+            alert("Registered successfully!")
+            window.location.href = `${linkConnection}/tasks`
+        } else {
+            alert(result.msg || "Something went wrong")
+        }
+    } catch (error){
+        console.log(error);
+        alert("Error connecting to server")
+    }
+})
+}
+
+if(loginFormElement) {
+    loginFormElement.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const loginFormData = {
+            email: document.querySelector('#email').value,
+            password: document.querySelector('#password').value
+        }
+
+        try{
+            const response = await fetch(`${linkConnection}/users/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(loginFormData)
+            })
+
+            const result = await response.json()
+            if(response.ok) {
+                localStorage.setItem("token", result.token)
+                alert("Login successfully!")
+                window.location.href = `${linkConnection}/tasks`
+            } else {
+                alert(result.msg || "Something went wrong")
+            }
+        } catch (error) {
+            console.log(error);
+            alert("Error login in")
+        }  
+    })
+}
