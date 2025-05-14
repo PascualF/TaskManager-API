@@ -30,7 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then((tasks) => {
             const listElement = document.getElementById("task-grid")
+            
             tasks.forEach((task) => {
+                console.log(task)
                 const liItem = document.createElement("li");
                 liItem.textContent = task.title;
                 liItem.classList.add("task-card")
