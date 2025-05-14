@@ -17,7 +17,9 @@ if(registerFormElement) {
         // Sending to the backend. to register new user, including the header for token checking.
         const response = await fetch(`${linkConnection}/users/register`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify(registerFormData)
         })
 
@@ -55,7 +57,7 @@ if(loginFormElement) {
             if(response.ok) {
                 localStorage.setItem("token", result.token)
                 alert("Login successfully!")
-                window.location.href = `/app.html`
+                window.location.href = `app.html`
             } else {
                 alert(result.msg || "Something went wrong")
             }

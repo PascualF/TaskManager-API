@@ -1,7 +1,6 @@
 const express = require('express')
 const User = require('../models/User.js')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
 require('dotenv').config()
 
 // Token created
@@ -35,7 +34,7 @@ const loginUser =  async (req, res) => {
         if(!isMatch) return res.status(401).json({msg: 'Invalid password'});
 
         const token = jwt.sign({userId : user._id}, JWT_TOKEN, {expiresIn: JWT_EXPIRES})
-         res.status(201).json({user: {name:user.name}, token}) // Json containing user's name and token
+        res.status(201).json({user: {name:user.name}, token}) // Json containing user's name and token
     } catch( error) {
         console.log('error - ' + error)
     }

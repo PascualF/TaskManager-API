@@ -6,11 +6,13 @@ const JWT_TOKEN = process.env.TOKEN_SECRET
 const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers.authorization;
 
+    console.log(req.headers)
+
     if(!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).json({msg: 'No token provided.'})
     }
-
-    const token = authHeader.split(' ')[1]; // This extracts the token from 'Bearer tzetryezrvebb....'
+    // This extracts the token from 'Bearer tzetryezrvebb....' and remove Bearer
+    const token = authHeader.split(' ')[1];
     try {
         const payload = jwt.verify(token, JWT_TOKEN);
         req.user = {userId: payload.userId};
