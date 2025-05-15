@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const token = localStorage.getItem("token")
+    const userName = localStorage.getItem()
     const linkConnection = 'http://localhost:3000'
 
     if(!token) {
@@ -17,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         })
         .then(response => {
-            console.log("Response status: ", response.status)
+            console.log("Response status:", response.status)
             if(!response.ok) {
                 throw new Error(`Unauthorized: ${response.status}`)
             }
@@ -28,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if(tasks.length > 0) {
                 tasks.forEach((task) => {
                 console.log(task)
+                console.log()
                 const liItem = document.createElement("li");
                 liItem.textContent = task.title;
                 liItem.classList.add("task-card")
@@ -38,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 noTasksAvailable.textContent = 'Create some tasks...'
                 listElement.appendChild(noTasksAvailable)
             }
-        
         })
         .catch(error => {
             console.error(`Error fetching tasks: ${error}`)
