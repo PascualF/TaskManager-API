@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const token = localStorage.getItem("token")
-    const userName = localStorage.getItem()
+    
     const linkConnection = 'http://localhost:3000'
 
     if(!token) {
@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = `login.html`;
         return
     }
-
     fetch(`${linkConnection}/tasks`, {
         method: "GET",
         headers: {
@@ -19,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => {
             console.log("Response status:", response.status)
+            console.log(localStorage)
             if(!response.ok) {
                 throw new Error(`Unauthorized: ${response.status}`)
             }
@@ -46,4 +46,20 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("You must be logged in to view tasks");
             window.location.href = `login.html`;
     })
+
+
+    userInfoHeader()
 })
+
+const userInfoHeader = () => {
+    const divDropdownMenu = document.querySelector(".dropdown-content")
+    const userName = JSON.parse(localStorage.getItem("user")).name
+
+    if(!userName){
+        
+    } else {
+        
+        console.log(userName)
+    }
+
+}

@@ -22,9 +22,10 @@ if(registerFormElement) {
             },
             body: JSON.stringify(registerFormData)
         })
-
         const result = await response.json()
         if(response.ok) {
+            localStorage.setItem("token", result.token)
+            localStorage.setItem("user", result)
             alert("Registered successfully!")
             window.location.href = `/app.html`
         } else {
@@ -56,6 +57,7 @@ if(loginFormElement) {
             const result = await response.json()
             if(response.ok) {
                 localStorage.setItem("token", result.token)
+                localStorage.setItem("user", JSON.stringify(result.user))
                 alert("Login successfully!")
                 window.location.href = `app.html`
             } else {

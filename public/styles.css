@@ -125,3 +125,14 @@ button:hover{
 .task-card.placeholder{
     visibility: hidden;
 }
+
+.user-div-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.user-div-container > svg{
+    margin-right: 10px;
+}
