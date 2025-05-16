@@ -27,14 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
         .then((tasks) => {
             const listElement = document.getElementById("task-grid")
             if(tasks.length > 0) {
-                tasks.forEach((task) => {
-                console.log(task)
-                console.log()
-                const liItem = document.createElement("li");
-                liItem.textContent = task.title;
-                liItem.classList.add("task-card")
-                listElement.appendChild(liItem)
-                })
+                displayTaskCards(listElement, tasks)
+                addTaskCard(listElement)
             } else {
                 const noTasksAvailable = document.createElement("h2")
                 noTasksAvailable.textContent = 'Create some tasks...'
@@ -51,15 +45,56 @@ document.addEventListener("DOMContentLoaded", () => {
     userInfoHeader()
 })
 
+const addTaskCard = (parentGrid) => {
+    const addCard = document.createElement("li");
+    addCard.classList.add("task-card")
+    addCard.classList.add("adding-task-card")
+    addCard.textContent = "➕ Add Task"
+    parentGrid.appendChild(addCard)
+}
+
+// Title / Description / Due Date / Edit and Delete buttons / Status Badge - Progress, Done, etc....
+
+const displayTaskCards = (parentGrid, tasks) => {
+    tasks.forEach((task) => {
+        const liTaskItem = document.createElement("li");
+        liTaskItem.classList.add("task-card")
+        const dateFormatted = new Date(task.dueDate.slice(0,10))
+        const readableDate = dateFormatted.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        })
+        console.log(readableDate)
+        liTaskItem.innerHTML = `
+            <h3>${task.title}</h3>
+            <p class="task-desc">${task.content}</p>
+            <p class="task-due">Due: ${readableDate || "No due date-"}</p>
+            <div class="buttons-actions-card">
+                <button class="btn-edit">Edit</button>
+                <button class="delete-btn">Delete</button>
+            </div>
+            <span class="status-badge ${task.status}">${task.status}</span>
+        `;
+        
+        parentGrid.appendChild(liTaskItem)
+    })
+}
+
 const userInfoHeader = () => {
     const divDropdownMenu = document.querySelector(".dropdown-content")
     const userName = JSON.parse(localStorage.getItem("user")).name
+    const buttonHoverNameOrLogin = document.querySelector(".dropdown-button")
 
     if(!userName){
-        
+        buttonHoverNameOrLogin.textContent = 'Login';
     } else {
-        
-        console.log(userName)
+        divDropdownMenu.innerHTML = ''
+        buttonHoverNameOrLogin.textContent = userName;
+        const dropdownArrayUserExist = ['Options', 'Dark Mode', 'Logout']
+        dropdownArrayUserExist.map((optionDropdown) => {
+            divDropdownMenu.innerHTML += `<a href="#" class="${optionDropdown}">${optionDropdown}</a>`
+        })
     }
 
 }
