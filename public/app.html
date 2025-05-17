@@ -27,7 +27,7 @@
                 <!-- Placeholder for profile pic and name -->
                 <button class="dropdown-button"></button>
                 <div class="dropdown-content">
-
+                    
                 </div>
             </div>
         </div>
@@ -50,6 +50,30 @@
         <main>
             <div id="task-grid" >
 
+            </div>
+            <!-- Title, content, dueDate, status (todo, progress, done), priority (high, medium, low) -->
+            <div class="container-modal modal-hidden">
+                <button class="button-close-modal">X</button>
+                <form id="create-task-form">
+                    <p class="create-new-task-paragraph">Create a new task...</p>
+                    <input type="text" id="title" placeholder="Title" required />
+                    <textarea id="content"  maxlength="100" placeholder="Write a small description" required></textarea>
+                    <label for="dueDate">Due Date:</label>
+                    <input type="date" id="dueDate" required/>
+                    <label for="status">Task Status:</label>
+                    <select name="status-task" id="status-task">
+                        <option value="todo-task" selected>Todo</option>
+                        <option value="in-progress-task">In Progress...</option>
+                        <option value="done-task">Done</option>
+                    </select>
+                    <label for="priority">Task Priority:</label>
+                    <select name="prriority-task" id="priority-task">
+                        <option value="low-task">Low</option>
+                        <option value="medium-task" selected>Medium</option>
+                        <option value="done-task">High</option>
+                    </select>
+                    <button class="submit-button-new-task">Submit New Task</button>
+                </form>
             </div>
         </main>
     </div>

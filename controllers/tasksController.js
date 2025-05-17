@@ -3,7 +3,6 @@ const Task = require('../models/Task')
 const getAllTasks = async (req, res) => {
     try {
         const findTask = await Task.find()
-        console.log(findTask)
         res.status(200).json(findTask)
     } catch (error) {
         console.log(error)
@@ -14,8 +13,6 @@ const getSpecificTask = async (req, res) => {
     try{
         const id = req.params.taskID
         const value = await Task.findById(id).exec()
-        console.log(id)
-        console.log(value)
         res.status(200).json(value)
     } catch (error) {
         console.log(error)

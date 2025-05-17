@@ -186,3 +186,64 @@ svg{
     align-items: center;
     cursor: pointer;
 }
+
+#create-task-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Everything about the modal */
+
+.modal-hidden{
+    display:none;
+}
+
+.submit-button-new-task{
+    margin-top: 5px;
+}
+
+.container-modal{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 5px solid black;
+    height: 350px;
+    width: 400px;
+    background-color: var(--primary);
+    border-radius: 15px;
+}
+
+.button-close-modal{
+    position:absolute;
+    top: 3%;
+    right: 3%;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.button-close-modal:hover{
+    background-color:#c7b8b8;
+}
+
+#title,
+#content{
+    width: 260px;
+    margin-bottom: 5px;
+}
+
+#content{
+    height: 60px;
+}
+
+label{
+    margin-top: 8px;
+}
+
+.submit-button-new-task{
+    border-radius: 5px;
+    box-shadow: 10px 5px 5px rgb(86, 86, 86);
+    margin-top: 10px;
+}

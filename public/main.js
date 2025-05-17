@@ -1,15 +1,67 @@
 document.addEventListener("DOMContentLoaded", () => {
+    
+    fetchAllTasksToDisplay()
+    
+    // Displays the info of the logged in user
+    userInfoHeader()
+
+    // Closes the modal when pressing the X button in the modal
+    const closeModalButton = document.querySelector(".button-close-modal")
+    closeModalButton.addEventListener('click', () => {
+        closeModal()
+    })
+
+    // This will send the data to the backend
+    const submitCreateTaskButton = document.querySelector(".submit-button-new-task")
+    submitCreateTaskButton.addEventListener('click', (event) => {
+        event.preventDefault()
+
+        const taskData = {
+            title : document.querySelector("#title").value,
+            content : document.querySelector("#content").value,
+            status : document.querySelector("#status-task").value,
+            dueDate : document.querySelector("#dueDate").value,
+            priority : document.querySelector("#priority-task").value
+        }
+
+        createNewTask(taskData)
+        document.querySelector('#task-grid').innerHTML = ''
+        fetchAllTasksToDisplay()
+        closeModal()
+    })
+
+    document.addEventListener('click', (event) => {
+        if(event.target.classList.contains('delete-btn')) {
+            const deleteButton = event.target;
+
+            // this will get the closest 
+            const taskItem = deleteButton.closest('.task-card')
+
+            const taskId = taskItem.querySelector('h3').id // id inside the h3 id
+
+            deleteTask(taskId)
+            document.querySelector('#task-grid').innerHTML = ''
+            fetchAllTasksToDisplay()
+        }
+    })
+
+    // Set minimum date on due date input.
+    const dueDateInput = document.querySelector("#dueDate");
+    const today = new Date().toISOString().split("T")[0]; // format to YYYY-MM-DD
+    dueDateInput.min = today
+})
+
+const fetchAllTasksToDisplay = () => {
     const token = localStorage.getItem("token")
     
-    const linkConnection = 'http://localhost:3000'
-
     if(!token) {
         console.log('No token found, redirecting to login');
         alert("You must log in first.");
         window.location.href = `login.html`;
         return
     }
-    fetch(`${linkConnection}/tasks`, {
+
+    fetch(`http://localhost:3000/tasks`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`,
@@ -17,8 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         })
         .then(response => {
-            console.log("Response status:", response.status)
-            console.log(localStorage)
             if(!response.ok) {
                 throw new Error(`Unauthorized: ${response.status}`)
             }
@@ -40,21 +90,30 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("You must be logged in to view tasks");
             window.location.href = `login.html`;
     })
-
-
-    userInfoHeader()
-})
+}
 
 const addTaskCard = (parentGrid) => {
     const addCard = document.createElement("li");
     addCard.classList.add("task-card")
     addCard.classList.add("adding-task-card")
     addCard.textContent = "➕ Add Task"
+
+    addCard.addEventListener('click', showModal)
+
     parentGrid.appendChild(addCard)
 }
 
-// Title / Description / Due Date / Edit and Delete buttons / Status Badge - Progress, Done, etc....
+const showModal = () => {
+    const containerModal = document.querySelector(".container-modal");
+    containerModal.classList.remove("modal-hidden")
+}
 
+const closeModal = () => {
+    const containerModal = document.querySelector(".container-modal");
+    containerModal.classList.add("modal-hidden")
+}
+
+// Title / Description / Due Date / Edit and Delete buttons / Status Badge - Progress, Done, etc....
 const displayTaskCards = (parentGrid, tasks) => {
     tasks.forEach((task) => {
         const liTaskItem = document.createElement("li");
@@ -67,7 +126,7 @@ const displayTaskCards = (parentGrid, tasks) => {
         })
         console.log(readableDate)
         liTaskItem.innerHTML = `
-            <h3>${task.title}</h3>
+            <h3 id=${task._id}>${task.title}</h3>
             <p class="task-desc">${task.content}</p>
             <p class="task-due">Due: ${readableDate || "No due date-"}</p>
             <div class="buttons-actions-card">
@@ -75,10 +134,55 @@ const displayTaskCards = (parentGrid, tasks) => {
                 <button class="delete-btn">Delete</button>
             </div>
             <span class="status-badge ${task.status}">${task.status}</span>
+            <span class="priority-badge ${task.priority}">${task.priority}</span>
         `;
         
         parentGrid.appendChild(liTaskItem)
     })
+}
+
+const createNewTask = async (taskData) => {
+    const token = localStorage.getItem("token");
+
+    try{
+        console.log(taskData)
+        const response = await fetch('http://localhost:3000/tasks', {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(taskData)
+        });
+
+        if(!response.ok) {
+            throw new Error("Failed to create task");
+        }
+
+        const newTask = await response.json()
+        console.log(`New task created ${newTask}`)
+
+    }catch(error){
+        console.log(`Error creating new task: ${error}`)
+    }
+}
+
+const deleteTask = async (taskId) => {
+    const token = localStorage.getItem("token");
+
+
+
+    try{
+        const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        })
+    } catch (error) {
+        console.log(`Error deleting task with id:${taskId} => ${error}`)
+    }
 }
 
 const userInfoHeader = () => {
@@ -96,5 +200,4 @@ const userInfoHeader = () => {
             divDropdownMenu.innerHTML += `<a href="#" class="${optionDropdown}">${optionDropdown}</a>`
         })
     }
-
 }
