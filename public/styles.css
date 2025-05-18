@@ -101,6 +101,9 @@ svg{
     padding: 20px;
     height: 100%;
     align-content: start;
+    overflow-y: auto;
+    max-height: 590px;
+    padding-bottom: 1.2rem;
 }
 
 .task-card{
@@ -200,7 +203,7 @@ svg{
     display:none;
 }
 
-.submit-button-new-task{
+.button-modal{
     margin-top: 5px;
 }
 
@@ -242,7 +245,7 @@ label{
     margin-top: 8px;
 }
 
-.submit-button-new-task{
+.button-modal{
     border-radius: 5px;
     box-shadow: 10px 5px 5px rgb(86, 86, 86);
     margin-top: 10px;
