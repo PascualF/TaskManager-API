@@ -1,4 +1,5 @@
 let isEditMode = false;
+let editingTaskId = null; // this will store the ID being modified
 const token = localStorage.getItem("token")
 const linkLocalhost = "http://localhost:3000"
 
@@ -14,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeModalButton = document.querySelector(".button-close-modal")
     closeModalButton.addEventListener('click', () => {
         closeModal()
-        document.querySelector('.button-modal').classList.remove('submit-button-new-task')
     })
     
     // This will send the data to the backend
@@ -55,22 +55,43 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })
 
+    // Entering Edit Mode
     document.addEventListener('click', async (event) =>{
         if(event.target.classList.contains('btn-edit')){
             const editButton = event.target;
 
+            isEditMode = true
+            document.querySelector('.button-modal').classList.add('btn-update')
+            document.querySelector('.button-modal').classList.remove('submit-button-new-task');
             const taskItem = editButton.closest('.task-card')
 
             const taskId = taskItem.querySelector('h3').id
 
-            getSpecificTask(taskId)
+            editingTaskId = taskId
 
+            await getSpecificTask(taskId)
         }
     })
 
     document.addEventListener('click', async(event) => {
+        
         if(event.target.classList.contains('btn-update')){
-            console.log('can start updating')
+            event.preventDefault()
+
+            const taskData = {
+                title : document.querySelector("#title").value,
+                content : document.querySelector("#content").value,
+                status : document.querySelector("#status-task").value,
+                dueDate : document.querySelector("#dueDate").value,
+                priority : document.querySelector("#priority-task").value
+            }
+
+            await updateTask(taskData, editingTaskId)
+            clearInputModal()
+            editingTaskId = null;
+            document.querySelector('#task-grid').innerHTML = ''
+            fetchAllTasksToDisplay()
+            closeModal()
         }
     })
 
@@ -176,12 +197,12 @@ const getSpecificTask = async (taskId) => {
             }
             return response.json()
         }).then((task) => {
-            console.log('This is the printing')
-            console.log(task)
             // Here showModal and populate with details
             showModal()
+            const dateFormattedToGb = new Date(task.dueDate).toLocaleDateString("en-US")
             document.querySelector("#title").value = task.title;
             document.querySelector("#content").value = task.content;
+            document.querySelector("#dueDate").value = dateFormattedToGb;
         }).catch(error => {
             console.error(`Error fetching tasks: ${error}`)
             alert("You must be logged in to view tasks");
@@ -193,11 +214,11 @@ const getSpecificTask = async (taskId) => {
     }
 }
 
-const updateTask = (taskData) => {
+const updateTask = async(taskData, taskId) => {
     try{
-        console.log(taskData)
+        console.log(taskData, taskId)
 
-        /* const response = fetch(`${linkLocalhost}/tasks/${taskId}`, {
+        const response = await fetch(`${linkLocalhost}/tasks/${taskId}`, {
             method: "PATCH",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -208,7 +229,9 @@ const updateTask = (taskData) => {
 
         if(!response.ok){
             throw new Error('Failed to update task.')
-        } */
+        }
+
+        console.log(`Task updated successfully.`);
     } catch (error) {
         console.log(`Failed updating the task => ${error}`)
     }
@@ -239,13 +262,19 @@ const showModal = () => {
         buttonSubmitOrEdit.innerHTML = `Submit New Task`
     } else {
         buttonSubmitOrEdit.innerHTML = `Update Task`
-        buttonSubmitOrEdit.classList.add('update-button')
     } 
 }
 
 const closeModal = () => {
     const containerModal = document.querySelector(".container-modal");
     containerModal.classList.add("modal-hidden")
+
+    const buttonModal = document.querySelector('.button-modal');
+    buttonModal.classList.remove('submit-button-new-task');
+    buttonModal.classList.remove('btn-update');
+
+    isEditMode = false
+    editingTaskId = null;
 }
 
 // Title / Description / Due Date / Edit and Delete buttons / Status Badge - Progress, Done, etc....
@@ -254,13 +283,8 @@ const displayTaskCards = (parentGrid, tasks) => {
         const liTaskItem = document.createElement("li");
         liTaskItem.classList.add("task-card")
 
-        const dateFormatted = new Date(task.dueDate)
-        const readableDate = dateFormatted.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        })
-
+        const readableDate = formattingDate(task.dueDate)
+        console.log(task._id, task.title)
         liTaskItem.innerHTML = `
             <h3 id=${task._id}>${task.title}</h3>
             <p class="task-desc">${task.content}</p>
@@ -275,6 +299,18 @@ const displayTaskCards = (parentGrid, tasks) => {
         
         parentGrid.appendChild(liTaskItem)
     })
+}
+
+const formattingDate = (date) => {
+    const dateFormatted = new Date(date)
+    
+    return (
+        dateFormatted.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        })
+    )
 }
 
 const userInfoHeader = () => {
@@ -297,5 +333,8 @@ const userInfoHeader = () => {
 const clearInputModal = () => {
     document.querySelector("#title").value = "";
     document.querySelector("#content").value = "";
+    document.querySelector("#status-task").value = "To Do";
     document.querySelector("#dueDate").value = "";
+    document.querySelector("#priority-task").value = "Low";
+
 }
