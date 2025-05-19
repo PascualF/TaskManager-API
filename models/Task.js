@@ -27,7 +27,8 @@ const taskSchema = new Schema(
             type: String,
             enumValues: ["low", "medium", "high"],
             default: "medium"
-        }
+        }/* ,
+        user: [{ type: Schema.Types.ObjectId, ref: "User" }] */
     }
 )
 

@@ -1,6 +1,6 @@
 let isEditMode = false;
 let editingTaskId = null; // this will store the ID being modified
-const token = localStorage.getItem("token")
+const token = localStorage.getItem("tokenDonezoid")
 const linkLocalhost = "http://localhost:3000"
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dueDateInput.min = today
 })
 
-const fetchAllTasksToDisplay = () => {   
+const fetchAllTasksToDisplay = () => {  
     if(!token) {
         console.log('No token found, redirecting to login');
         alert("You must log in first.");
@@ -315,7 +315,7 @@ const formattingDate = (date) => {
 
 const userInfoHeader = () => {
     const divDropdownMenu = document.querySelector(".dropdown-content")
-    const userName = JSON.parse(localStorage.getItem("user")).name
+    const userName = JSON.parse(localStorage.getItem("userDonezoid")).name
     const buttonHoverNameOrLogin = document.querySelector(".dropdown-button")
 
     if(!userName){

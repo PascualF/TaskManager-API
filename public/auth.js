@@ -24,8 +24,8 @@ if(registerFormElement) {
         })
         const result = await response.json()
         if(response.ok) {
-            localStorage.setItem("token", result.token)
-            localStorage.setItem("user", result)
+            localStorage.setItem("tokenDonezoid", result.token)
+            localStorage.setItem("userDonezoid", JSON.stringify(result.user))
             alert("Registered successfully!")
             window.location.href = `/app.html`
         } else {
@@ -55,9 +55,11 @@ if(loginFormElement) {
             })
 
             const result = await response.json()
+            console.log(result.user)
             if(response.ok) {
-                localStorage.setItem("token", result.token)
-                localStorage.setItem("user", JSON.stringify(result.user))
+                localStorage.setItem("tokenDonezoid", result.token)
+                localStorage.setItem("userDonezoid", JSON.stringify(result.user))
+                /* localStorage.setItem("user", JSON.stringify(result.user)) */
                 alert("Login successfully!")
                 window.location.href = `app.html`
             } else {

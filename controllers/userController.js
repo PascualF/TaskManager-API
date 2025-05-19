@@ -16,7 +16,7 @@ const registerUser = async (req, res) => {
         const user = await User.create({ name, email, password})
         //This creates a JWT token (payload, secretkey, valid token time)
         const token = jwt.sign({userId: user._id}, JWT_TOKEN, {expiresIn: JWT_EXPIRES}); 
-        res.status(201).json({user: {name:user.name}, token}) // Json containing user's name and token
+        res.status(201).json({user: {name:user.name, userId:user._id}, token}) // Json containing user's name and token
     } catch (error) {
         console.log('error' + error)
     }
@@ -34,7 +34,7 @@ const loginUser =  async (req, res) => {
         if(!isMatch) return res.status(401).json({msg: 'Invalid password'});
 
         const token = jwt.sign({userId : user._id}, JWT_TOKEN, {expiresIn: JWT_EXPIRES})
-        res.status(201).json({user: {name:user.name}, token}) // Json containing user's name and token
+        res.status(201).json({user: {name:user.name, userId:user._id}, token}) // Json containing user's name and token
     } catch( error) {
         console.log('error - ' + error)
     }
