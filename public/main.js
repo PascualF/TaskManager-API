@@ -1,7 +1,7 @@
 let isEditMode = false;
 let editingTaskId = null; // this will store the ID being modified
 const token = localStorage.getItem("tokenDonezoid")
-const linkLocalhost = "https://donezoid.onrender.com/"
+const linkLocalhost = "https://donezoid.onrender.com"
 
 document.addEventListener("DOMContentLoaded", () => {
     
