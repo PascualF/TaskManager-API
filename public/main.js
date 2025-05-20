@@ -1,7 +1,7 @@
-let isEditMode = false;
+let isEditMode = false; // This will active the edit mode
 let editingTaskId = null; // this will store the ID being modified
 const token = localStorage.getItem("tokenDonezoid")
-const linkLocalhost = "https://donezoid.onrender.com"
+const linkConnectioRender = "https://donezoid.onrender.com"
 
 document.addEventListener("DOMContentLoaded", () => {
     
@@ -17,11 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
         closeModal()
     })
     
-    // This will send the data to the backend
+    // This will send the data to the backend, when pressing sutbmit button
     document.addEventListener('click', (event) => {
         if(event.target.classList.contains("submit-button-new-task")){
             event.preventDefault()
-
 
             const taskData = {
                 title : document.querySelector("#title").value,
@@ -39,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })
 
-    // Edit and delete are quite similar, I can make only one function.
+    // Edit and delete are quite similar, I can make only one function??
     document.addEventListener('click', (event) => {
         if(event.target.classList.contains('delete-btn')) {
             const deleteButton = event.target;
@@ -95,6 +94,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })
 
+    // This will display all tasks
+    document.querySelector(".all-tasks").addEventListener('click', () => {
+        console.log("working for all tasks")
+    })
+
+    document.querySelector(".today-tasks").addEventListener('click', () => {
+        console.log("today taskss")
+    })
+
+    document.querySelector(".upcoming-tasks").addEventListener('click', () => {
+        console.log("upcoming tasks")
+    })
+
+    document.querySelector(".important-tasks").addEventListener('click', () => {
+        console.log("important tasks")
+    })
+
+    document.querySelector(".completed-tasks").addEventListener('click', () => {
+        console.log("completed tasks")
+    })
+
     // Set minimum date on due date input.
     const dueDateInput = document.querySelector("#dueDate");
     const today = new Date().toISOString().split("T")[0]; // format to YYYY-MM-DD
@@ -102,14 +122,18 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 const fetchAllTasksToDisplay = () => {  
+    
+    // Check if token exists.
     if(!token) {
         console.log('No token found, redirecting to login');
         alert("You must log in first.");
-        window.location.href = `login.html`;
+        window.location.href = `login.html`; // Send to login if not registered
         return
     }
 
-    fetch(`${linkLocalhost}/tasks`, {
+    document.getElementById('loader').classList.remove('hidden')
+    // Fetch all the tasks
+    fetch(`${linkConnectioRender}/tasks`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`,
@@ -127,6 +151,8 @@ const fetchAllTasksToDisplay = () => {
             if(tasks.length > 0) {
                 displayTaskCards(listElement, tasks)
                 addTaskCard(listElement)
+                document.getElementById('loader').classList.add('hidden')
+
             } else {
                 const noTasksAvailable = document.createElement("h2")
                 noTasksAvailable.textContent = 'Create some tasks...'
@@ -138,12 +164,13 @@ const fetchAllTasksToDisplay = () => {
             alert("You must be logged in to view tasks");
             window.location.href = `login.html`;
     })
+    
 }
 
 const createNewTask = async (taskData) => {
     try{
         console.log(taskData)
-        const response = await fetch(`${linkLocalhost}/tasks`, {
+        const response = await fetch(`${linkConnectioRender}/tasks`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -166,7 +193,7 @@ const createNewTask = async (taskData) => {
 
 const deleteTask = async (taskId) => {
     try{
-        const response = await fetch(`${linkLocalhost}/tasks/${taskId}`, {
+        const response = await fetch(`${linkConnectioRender}/tasks/${taskId}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -185,7 +212,7 @@ const deleteTask = async (taskId) => {
 
 const getSpecificTask = async (taskId) => {
     try {
-        fetch(`${linkLocalhost}/tasks/${taskId}`, {
+        fetch(`${linkConnectioRender}/tasks/${taskId}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -218,7 +245,7 @@ const updateTask = async(taskData, taskId) => {
     try{
         console.log(taskData, taskId)
 
-        const response = await fetch(`${linkLocalhost}/tasks/${taskId}`, {
+        const response = await fetch(`${linkConnectioRender}/tasks/${taskId}`, {
             method: "PATCH",
             headers: {
                 "Authorization": `Bearer ${token}`,

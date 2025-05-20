@@ -32,14 +32,15 @@
             </div>
         </div>
     </header>
-
+    
     <div class="container">
         <nav>
             <ul class="sidebar">
-                <li>Today</li>
-                <li>Upcoming</li>
-                <li>Important</li>
-                <li>Completed</li>
+                <li class="all-tasks">All Tasks</li>
+                <li class="today-tasks">Today</li>
+                <li class="upcoming-tasks">Upcoming</li>
+                <li class="important-tasks">Important</li>
+                <li class="completed-tasks">Completed</li>
             </ul>
             <hr>
             <ul>
@@ -49,7 +50,7 @@
 
         <main>
             <div id="task-grid">
-
+                <div id="loader" class="hidden">Loading...</div>
             </div>
             <!-- Title, content, dueDate, status (todo, progress, done), priority (high, medium, low) -->
             <div class="container-modal modal-hidden">

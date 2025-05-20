@@ -199,7 +199,8 @@ svg{
 
 /* Everything about the modal */
 
-.modal-hidden{
+.modal-hidden,
+.hidden{
     display:none;
 }
 
@@ -249,4 +250,14 @@ label{
     border-radius: 5px;
     box-shadow: 10px 5px 5px rgb(86, 86, 86);
     margin-top: 10px;
+}
+
+#loader{
+    font-size: 2rem;
+    text-align: center;
+    justify-content: center;
+    margin-top: 1rem;
+    background-color: white;
+    width: 200px;
+    border-radius: 10px;
 }

@@ -66,7 +66,6 @@ const updateTask = async (req, res) => {
 }
 
 // The auth is verified in the route.
-
 module.exports = {
     getAllTasks,
     getSpecificTask,
