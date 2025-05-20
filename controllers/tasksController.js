@@ -1,6 +1,6 @@
-const Task = require('../models/Task')
+import Task from '../models/Task.js'
 
-const getAllTasks = async (req, res) => {
+export const getAllTasks = async (req, res) => {
     try {
         const findTask = await Task.find()
         res.status(200).json(findTask)
@@ -9,7 +9,7 @@ const getAllTasks = async (req, res) => {
     }
 }
 
-const getSpecificTask = async (req, res) => {
+export const getSpecificTask = async (req, res) => {
     try{
         const id = req.params.taskID
         const value = await Task.findById(id).exec()
@@ -19,7 +19,7 @@ const getSpecificTask = async (req, res) => {
     }
 }
 
-const insertNewTask = async (req, res) => {
+export const insertNewTask = async (req, res) => {
     try{
         const { title, content, status, date, dueDate, priority} =  req.body
         const task = await Task.create({
@@ -36,7 +36,7 @@ const insertNewTask = async (req, res) => {
     }
 }
 
-const deleteTask = async(req, res) => {
+export const deleteTask = async(req, res) => {
     try{
         const id = req.params.taskID;
         const taskDelete = await Task.deleteOne({ "_id": id})
@@ -46,7 +46,7 @@ const deleteTask = async(req, res) => {
     }
 }
 
-const updateTask = async (req, res) => {
+export const updateTask = async (req, res) => {
     try{
         const id  = req.params.taskID;
         const taskUpdate = await Task.findByIdAndUpdate(id, req.body, {
@@ -66,10 +66,10 @@ const updateTask = async (req, res) => {
 }
 
 // The auth is verified in the route.
-module.exports = {
+/* export default {
     getAllTasks,
     getSpecificTask,
     insertNewTask,
     updateTask,
     deleteTask
-}
+} */

@@ -1,5 +1,7 @@
-const jwt = require('jsonwebtoken');
-require('dotenv').config()
+import pkg from 'jsonwebtoken';
+const { verify } = pkg
+import dotenv from 'dotenv'
+dotenv.config()
 
 const JWT_TOKEN = process.env.TOKEN_SECRET
 
@@ -12,7 +14,7 @@ const authMiddleware = async (req, res, next) => {
     // This extracts the token from 'Bearer tzetryezrvebb....' and remove Bearer
     const token = authHeader.split(' ')[1];
     try {
-        const payload = jwt.verify(token, JWT_TOKEN);
+        const payload = verify(token, JWT_TOKEN);
         req.user = {userId: payload.userId};
         next()
     } catch (error) {
@@ -20,4 +22,4 @@ const authMiddleware = async (req, res, next) => {
     }
 }
 
-module.exports = authMiddleware;
+export default authMiddleware;

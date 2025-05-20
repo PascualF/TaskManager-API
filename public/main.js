@@ -2,6 +2,7 @@ let isEditMode = false; // This will active the edit mode
 let editingTaskId = null; // this will store the ID being modified
 const token = localStorage.getItem("tokenDonezoid")
 const linkConnectioRender = "https://donezoid.onrender.com"
+import { fetchAllTasksToDisplay } from './taskService.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     
@@ -10,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Displays the info of the logged in user
     userInfoHeader()
-
+  
     // Closes the modal when pressing the X button in the modal
     const closeModalButton = document.querySelector(".button-close-modal")
     closeModalButton.addEventListener('click', () => {
@@ -96,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // This will display all tasks
     document.querySelector(".all-tasks").addEventListener('click', () => {
+
         console.log("working for all tasks")
     })
 
@@ -121,8 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dueDateInput.min = today
 })
 
-const fetchAllTasksToDisplay = () => {  
-    
+/* const fetchAllTasksToDisplay = () => {  
     // Check if token exists.
     if(!token) {
         console.log('No token found, redirecting to login');
@@ -130,8 +131,7 @@ const fetchAllTasksToDisplay = () => {
         window.location.href = `login.html`; // Send to login if not registered
         return
     }
-
-    document.getElementById('loader').classList.remove('hidden')
+    document.getElementById('loader')?.classList.remove('hidden')
     // Fetch all the tasks
     fetch(`${linkConnectioRender}/tasks`, {
         method: "GET",
@@ -149,10 +149,10 @@ const fetchAllTasksToDisplay = () => {
         .then((tasks) => {
             const listElement = document.getElementById("task-grid")
             if(tasks.length > 0) {
+                document.getElementById('loader')?.classList.add('hidden')
                 displayTaskCards(listElement, tasks)
                 addTaskCard(listElement)
-                document.getElementById('loader').classList.add('hidden')
-
+                
             } else {
                 const noTasksAvailable = document.createElement("h2")
                 noTasksAvailable.textContent = 'Create some tasks...'
@@ -163,9 +163,8 @@ const fetchAllTasksToDisplay = () => {
             console.error(`Error fetching tasks: ${error}`)
             alert("You must be logged in to view tasks");
             window.location.href = `login.html`;
-    })
-    
-}
+    }) 
+} */
 
 const createNewTask = async (taskData) => {
     try{
@@ -363,5 +362,4 @@ const clearInputModal = () => {
     document.querySelector("#status-task").value = "To Do";
     document.querySelector("#dueDate").value = "";
     document.querySelector("#priority-task").value = "Low";
-
 }

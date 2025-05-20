@@ -1,9 +1,10 @@
-const mongoose = require('mongoose');
-require('dotenv').config()
+import { connect } from 'mongoose';
+import dotenv from 'dotenv'
+dotenv.config()
 
 const connectDB = async () => {
     try{
-        await mongoose.connect(process.env.ATLAS_PW)
+        await connect(process.env.ATLAS_PW)
         console.log('connected to mongoDB')
     } catch (error) {
         console.log(error)
@@ -11,4 +12,4 @@ const connectDB = async () => {
 }
     
 
-module.exports = connectDB;
+export default connectDB;

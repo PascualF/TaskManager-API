@@ -1,7 +1,14 @@
 const registerFormElement = document.querySelector("#register-form");
 const loginFormElement = document.querySelector("#login-form");
 const linkConnection = 'https://donezoid.onrender.com'
+const buttonRegisterFromLogin = document.querySelector('.not-registered-button');
 
+// If ending up in login page and not registeres yet
+buttonRegisterFromLogin?.addEventListener('click', () => {
+    window.location.href = './register.html'
+})
+
+// The register process
 if(registerFormElement) {
     registerFormElement.addEventListener("submit", async (e) => {
     e.preventDefault(); // prevent automatic refresh
@@ -23,6 +30,7 @@ if(registerFormElement) {
             body: JSON.stringify(registerFormData)
         })
         const result = await response.json()
+        console.log(result)
         if(response.ok) {
             localStorage.setItem("tokenDonezoid", result.token)
             localStorage.setItem("userDonezoid", JSON.stringify(result.user))
@@ -38,6 +46,7 @@ if(registerFormElement) {
 })
 }
 
+// The login process
 if(loginFormElement) {
     loginFormElement.addEventListener("submit", async (e) => {
         e.preventDefault();

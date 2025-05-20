@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt') // This is required to hash the password
+import mongoose, { model } from 'mongoose';
+import { genSalt, hash, compare } from 'bcrypt'; // This is required to hash the password
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
@@ -26,14 +26,14 @@ const userSchema = new Schema({
 userSchema.pre('save', async function() {
     // Checks if THIS document (user) about to be saved had the password modified, or not.
     if (!this.isModified('password')) return // If password not changed, no hashing.
-    const salt = await bcrypt.genSalt(10); // 10 rounds standar to hash tje password stronger.
-    this.password = await bcrypt.hash(this.password, salt) // this will hash with the password from the user on the schema, using the salt.
+    const salt = await genSalt(10); // 10 rounds standar to hash tje password stronger.
+    this.password = await hash(this.password, salt) // this will hash with the password from the user on the schema, using the salt.
 
 })
 
 // Compare password method to each user - when user log, it compares password.
 userSchema.methods.comparePassword = async function(candidatePassword) { //the password the user will type.
-    return await bcrypt.compare(candidatePassword, this.password) // this.password is already hashed in this step. TRUE or FALSE
+    return await compare(candidatePassword, this.password) // this.password is already hashed in this step. TRUE or FALSE
 }
 
-module.exports = mongoose.model('User', userSchema);
+export default model('User', userSchema);

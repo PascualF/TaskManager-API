@@ -1,15 +1,18 @@
-const express = require('express')
+import express, { json } from 'express';
 const app = express();
-const path = require('path')
-const tasksRoutes = require('./routes/tasksRoute.js')
-const userRoutes = require('./routes/userRoute.js')
-const connectDB = require('./config/db.js')
-const cors = require('cors')
+import path, {dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+import tasksRoutes from './routes/tasksRoute.js';
+import userRoutes from './routes/userRoute.js';
+import connectDB from './config/db.js';
+import cors from 'cors';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 connectDB()
 
-app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.json()) // handles incomming JSON data
+app.use(express.static(join(__dirname, 'public')))
+app.use(json()) // handles incomming JSON data
 
 app.use(cors())
 
@@ -17,7 +20,7 @@ app.use('/users', userRoutes)
 app.use('/', tasksRoutes)
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "app.html"))
+    res.sendFile(join(__dirname, "public", "app.html"))
 })
 
 // Port to be used, will be handled in .env
