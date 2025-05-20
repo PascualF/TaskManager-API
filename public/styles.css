@@ -102,7 +102,7 @@ svg{
     height: 100%;
     align-content: start;
     overflow-y: auto;
-    max-height: 590px;
+    max-height: calc(92vh - 50px);
     padding-bottom: 1.2rem;
 }
 
