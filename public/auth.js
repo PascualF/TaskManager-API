@@ -1,6 +1,6 @@
 const registerFormElement = document.querySelector("#register-form");
 const loginFormElement = document.querySelector("#login-form");
-const linkConnection = 'http://localhost:3000'
+const linkConnection = 'https://donezoid.onrender.com'
 
 if(registerFormElement) {
     registerFormElement.addEventListener("submit", async (e) => {
