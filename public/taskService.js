@@ -8,6 +8,8 @@ const header = () => ({
 })
 
 export async function fetchAllTasksToDisplay() {
+    const taskGrid = document.querySelector('#task-grid')
+    taskGrid.innerHTML = '' // cleans the taskGrid before any fetch happens
 
     // Check if token exists.
     if(!token) {
@@ -17,40 +19,48 @@ export async function fetchAllTasksToDisplay() {
         return
     }
 
-    document.getElementById('loader')?.classList.remove('hidden')
+    const loaderSentence = document.getElementById('loader');
+    loaderSentence?.classList.remove('hidden')
     // Fetch all the tasks
-    await fetch(`${API}/tasks`, {
-        method: "GET",
-        headers: header()
-        })
-        .then(response => {
-            if(!response.ok) {
-                throw new Error(`Unauthorized: ${response.status}`)
-            }
-            return response.json()
-        })
-        .then((tasks) => {
-            const listElement = document.getElementById("task-grid")
-            document.querySelector('#task-grid').innerHTML = ''
-            if(tasks.length > 0) {
-                document.getElementById('loader')?.classList.add('hidden')
-                displayTaskCards(listElement, tasks)
-                addTaskCard(listElement)
-                
-            } else {
-                const noTasksAvailable = document.createElement("h2")
-                noTasksAvailable.textContent = 'Create some tasks...'
-                listElement.appendChild(noTasksAvailable)
-            }
-        })
-        .catch(error => {
-            console.error(`Error fetching tasks: ${error}`)
-            alert("You must be logged in to view tasks");
-            window.location.href = `login.html`;
-    })
+
+    try {
+        const response = await fetch(`${API}/tasks`, {
+            method: "GET",
+            headers: header()
+        });
+
+        if(!response.ok) throw new Error("Failed to fetch tasks");
+
+        const tasksData = await response.json()
+
+        if(tasksData.length > 0) {
+            displayTaskCards(taskGrid, tasksData)
+        }
+
+        addTaskCard(taskGrid)
+
+    } catch (error) {
+        console.error(`Error fetching tasks: ${error}`)
+        alert("You must be logged in to view tasks");
+        window.location.href = `login.html`;
+    } finally {
+        loaderSentence?.classList.remove('hidden') // hide the loader anyway
+    }
 }
 
 const displayTaskCards = (parentGrid, tasks) => {
+    // Sorting by dates
+
+    const tasksNewlyOrganized = null;
+    console.log(typeof tasks)
+    if(!tasksNewlyOrganized){
+        tasks.sort((a, b) =>  new Date(a.dueDate) - new Date(b.dueDate)) // because dueDate is a string
+        // if nothing is passed the display is chronologically and all tasks
+    } else if (tasksNewlyOrganized === 'Today') {
+        console.log('ready t flter today tass')
+    }
+
+    console.log(typeof tasks)
     tasks.forEach((task) => {
         const liTaskItem = document.createElement("li");
         liTaskItem.classList.add("task-card")
@@ -96,20 +106,16 @@ const formattingDate = (date) => {
 
 export const createNewTask = async (taskData) => {
     try{
-        console.log(taskData)
         const response = await fetch(`${API}/tasks`, {
             method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
+            headers: header(),
             body: JSON.stringify(taskData)
         });
 
-        if(!response.ok) {
-            throw new Error("Failed to create task");
-        }
+        if(!response.ok) throw new Error("Failed to create task");
+
         const newTask = await response.json()
+        
         console.log(`New task created ${newTask}`)
 
     }catch(error){

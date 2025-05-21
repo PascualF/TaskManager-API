@@ -21,10 +21,25 @@ export function setupEventListeners() {
     // Closes the modal when pressing the X button
     document.querySelector(".button-close-modal").addEventListener('click', closeModal)
 
+    // Only one eventListener for the submit/update button
+    document.querySelector('.button-modal').addEventListener('click', async (event) => {
+            event.preventDefault();
+            const taskData = getTaskInputData();
+
+            if(currentEditId) {
+                await updateTask(taskData, currentEditId)
+            } else {
+                await createNewTask(taskData)
+            } 
+
+            clearInputModal()
+            closeModal()
+            await fetchAllTasksToDisplay()
+        })
+
     // Handles any event listener
     document.addEventListener('click', async (event) => {
         const target = event.target;
-
 
         // Open modal for the submit thing
         if(target.classList.contains("adding-task-card")){
@@ -39,7 +54,7 @@ export function setupEventListeners() {
             await fetchAllTasksToDisplay()
         }       
 
-        // Get a task and update // Edit task
+        // Get a task populate
         if(target.classList.contains("btn-edit")) {
             const taskId = target.dataset.id
             const task = await getSpecificTask(taskId);
@@ -47,22 +62,6 @@ export function setupEventListeners() {
             populateFormWithData(task); // populate the form with the data to be updated
             showModal(true)
         }  
-        
-        document.querySelector('.button-modal').addEventListener('click', async (event) => {
-            event.preventDefault();
-            const taskData = getTaskInputData();
-
-            if(currentEditId) {
-                await updateTask(taskData, currentEditId)
-            } else {
-                await createNewTask(taskData)
-            } 
-
-            clearInputModal()
-            closeModal()
-            await fetchAllTasksToDisplay()
-        })
-        
     })
 }
 
