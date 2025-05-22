@@ -7,7 +7,7 @@ const header = () => ({
     "Content-Type": "application/json"
 })
 
-export async function fetchAllTasksToDisplay() {
+export async function fetchAllTasksToDisplay(filteredTasks = 'all') {
     const taskGrid = document.querySelector('#task-grid')
     taskGrid.innerHTML = '' // cleans the taskGrid before any fetch happens
 
@@ -31,12 +31,32 @@ export async function fetchAllTasksToDisplay() {
 
         if(!response.ok) throw new Error("Failed to fetch tasks");
 
-        const tasksData = await response.json()
+        let tasksData = await response.json()
 
         if(tasksData.length > 0) {
+
+            switch(filteredTasks) {
+                case 'today':
+                    const today = new Date()
+                    tasksData = tasksData.filter(task => isSameDay(new Date(task.dueDate), today))
+                    break;
+                case 'upcoming':
+                    let inThreeDays = new Date()
+                    inThreeDays.setDate(inThreeDays.getDate() + 3)
+                    const inThreeDaysString = inThreeDays.toISOString().split('T')[0]
+                    console.log("Upcoming tasks before:", inThreeDaysString);
+                    tasksData = tasksData.filter(task => formattingDateToCompare(task.dueDate) < inThreeDaysString)
+                    break;
+                case 'important':
+                    tasksData = tasksData.filter(task => task.priority === 'High')
+                    break;
+                case 'completed':
+                    tasksData = tasksData.filter(task => task.status === 'Done')
+                    break;
+            }
+
             displayTaskCards(taskGrid, tasksData)
         }
-
         addTaskCard(taskGrid)
 
     } catch (error) {
@@ -102,6 +122,20 @@ const formattingDate = (date) => {
             day: 'numeric'
         })
     )
+}
+
+const isSameDay = (date1, date2) => {
+    const d1 = new Date(date1)
+    const d2 = new Date(date2)
+    return (
+        d1.getFullYear() === d2.getFullYear() &&
+        d1.getMonth() === d2.getMonth() &&
+        d1.getDate() === d2.getDate()
+    )
+}
+
+const formattingDateToCompare = (date) => {
+    return new Date(date).toISOString().split('T')[0]
 }
 
 export const createNewTask = async (taskData) => {

@@ -61,7 +61,27 @@ export function setupEventListeners() {
             currentEditId = taskId
             populateFormWithData(task); // populate the form with the data to be updated
             showModal(true)
-        }  
+        }
+
+        if(target.classList.contains("all-tasks")) {
+            fetchAllTasksToDisplay('all')
+        }
+
+        if(target.classList.contains("today-tasks")) {
+            fetchAllTasksToDisplay('today')
+        }
+
+        if(target.classList.contains("upcoming-tasks")) {
+            fetchAllTasksToDisplay('upcoming')
+        }
+
+        if(target.classList.contains("important-tasks")) {
+            fetchAllTasksToDisplay('important')
+        }
+
+        if(target.classList.contains("completed-tasks")) {
+            fetchAllTasksToDisplay('completed')
+        }
     })
 }
 

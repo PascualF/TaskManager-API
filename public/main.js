@@ -12,28 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Displays the info of the logged in user
     userInfoHeader()
 
-    // This will display all tasks => Chaging to eventHandler.js
-/*     document.querySelector(".all-tasks").addEventListener('click', () => {
-
-        console.log("working for all tasks")
-    })
-
-    document.querySelector(".today-tasks").addEventListener('click', () => {
-        console.log("today taskss")
-    })
-
-    document.querySelector(".upcoming-tasks").addEventListener('click', () => {
-        console.log("upcoming tasks")
-    })
-
-    document.querySelector(".important-tasks").addEventListener('click', () => {
-        console.log("important tasks")
-    })
-
-    document.querySelector(".completed-tasks").addEventListener('click', () => {
-        console.log("completed tasks")
-    }) */
-
     // Set minimum date on due date input.
     const dueDateInput = document.querySelector("#dueDate");
     const today = new Date().toISOString().split("T")[0]; // format to YYYY-MM-DD
