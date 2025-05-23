@@ -22,7 +22,7 @@ app.use(cors())
 }); */
 
 app.use('/users', userRoutes)
-app.use('/tasks', tasksRoutes)
+app.use('/', tasksRoutes)
 
 app.get("/", (req, res) => {
     res.sendFile(join(__dirname, "public", "app.html"))
