@@ -14,6 +14,8 @@ import {
     clearInputModal 
 } from './modal.js'
 
+const userIdLocal = JSON.parse(localStorage.getItem("userDonezoid")).userId
+
 export function setupEventListeners() {
 
     let currentEditId = null;
@@ -25,6 +27,8 @@ export function setupEventListeners() {
     document.querySelector('.button-modal').addEventListener('click', async (event) => {
             event.preventDefault();
             const taskData = getTaskInputData();
+
+            console.log(taskData)
 
             if(currentEditId) {
                 await updateTask(taskData, currentEditId)
@@ -63,22 +67,27 @@ export function setupEventListeners() {
             showModal(true)
         }
 
+        // This is the main filtered chrono list
         if(target.classList.contains("all-tasks")) {
             fetchAllTasksToDisplay('all')
         }
 
+        // This is the filteres for current today tasks
         if(target.classList.contains("today-tasks")) {
             fetchAllTasksToDisplay('today')
         }
 
+        // This is the filteres for upcoming tasks (within next 3 days)
         if(target.classList.contains("upcoming-tasks")) {
             fetchAllTasksToDisplay('upcoming')
         }
 
+        // This will filter for important tasks
         if(target.classList.contains("important-tasks")) {
             fetchAllTasksToDisplay('important')
         }
 
+        // // For completed tasks
         if(target.classList.contains("completed-tasks")) {
             fetchAllTasksToDisplay('completed')
         }
@@ -91,14 +100,15 @@ const getTaskInputData = () => {
         content : document.querySelector("#content").value,
         status : document.querySelector("#status-task").value,
         dueDate : document.querySelector("#dueDate").value,
-        priority : document.querySelector("#priority-task").value
+        priority : document.querySelector("#priority-task").value,
+        userId: userIdLocal
     }
 }
 
 const populateFormWithData = (task) => {
-        document.querySelector("#title").value = task.title,
-        document.querySelector("#content").value = task.content,
-        document.querySelector("#status-task").value = task.status,
-        document.querySelector("#dueDate").value = task.dueDate,
-        document.querySelector("#priority-task").value = task.priority
+    document.querySelector("#title").value = task.title,
+    document.querySelector("#content").value = task.content,
+    document.querySelector("#status-task").value = task.status,
+    document.querySelector("#dueDate").value = task.dueDate,
+    document.querySelector("#priority-task").value = task.priority
 }

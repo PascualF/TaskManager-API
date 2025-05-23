@@ -16,8 +16,13 @@ app.use(json()) // handles incomming JSON data
 
 app.use(cors())
 
+/* app.use((req, res, next) => {
+  console.log(`[${req.method}] ${req.url}`);
+  next();
+}); */
+
 app.use('/users', userRoutes)
-app.use('/', tasksRoutes)
+app.use('/tasks', tasksRoutes)
 
 app.get("/", (req, res) => {
     res.sendFile(join(__dirname, "public", "app.html"))

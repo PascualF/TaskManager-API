@@ -1,11 +1,12 @@
 import Task from '../models/Task.js'
 
 export const getAllTasks = async (req, res) => {
+    const userId = req.query
     try {
-        const findTask = await Task.find()
+        const findTask = await Task.find({ userId })
         res.status(200).json(findTask)
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: `Something went wrong` })
     }
 }
 
@@ -20,15 +21,17 @@ export const getSpecificTask = async (req, res) => {
 }
 
 export const insertNewTask = async (req, res) => {
+    console.log(req.body)
     try{
-        const { title, content, status, date, dueDate, priority} =  req.body
+        const { title, content, status, date, dueDate, priority, userId } =  req.body
         const task = await Task.create({
             title,
             content,
             status,
             date,
             dueDate,
-            priority
+            priority,
+            userId
         })
         res.status(201).json({ task })
     } catch (error) {
@@ -55,7 +58,6 @@ export const updateTask = async (req, res) => {
         })
 
         if(!taskUpdate) {
-            // When not     
             return res.status(404).json({ msg: 'Task not found '}) 
         }
 
@@ -64,12 +66,3 @@ export const updateTask = async (req, res) => {
         console.log(error)
     }
 }
-
-// The auth is verified in the route.
-/* export default {
-    getAllTasks,
-    getSpecificTask,
-    insertNewTask,
-    updateTask,
-    deleteTask
-} */

@@ -14,21 +14,27 @@ const taskSchema = new Schema(
         status : {
             type: String,
             enumValues: ["todo", "in progress", "done"],
-            default: "todo"
+            default: "todo",
+            required: true
         },
         date: { 
             type: Date,
             default: Date.now 
         },
         dueDate : {
-            type: Date
+            type: Date,
+            required: true
         },
         priority : {
             type: String,
             enumValues: ["low", "medium", "high"],
-            default: "medium"
-        }/* ,
-        user: [{ type: Schema.Types.ObjectId, ref: "User" }] */
+            default: "medium",
+            required: true
+        },
+        userId: {
+            type: String,
+            required: true
+        }
     }
 )
 

@@ -1,6 +1,7 @@
 // This module will handle the API calls only
 const API = "https://donezoid.onrender.com";
 const token = localStorage.getItem("tokenDonezoid")
+const userIdLocal = JSON.parse(localStorage.getItem("userDonezoid")).userId
 
 const header = () => ({
     "Authorization": `Bearer ${token}`,
@@ -24,7 +25,7 @@ export async function fetchAllTasksToDisplay(filteredTasks = 'all') {
     // Fetch all the tasks
 
     try {
-        const response = await fetch(`${API}/tasks`, {
+        const response = await fetch(`${API}/tasks?userId=${userIdLocal}`, {
             method: "GET",
             headers: header()
         });
@@ -32,6 +33,8 @@ export async function fetchAllTasksToDisplay(filteredTasks = 'all') {
         if(!response.ok) throw new Error("Failed to fetch tasks");
 
         let tasksData = await response.json()
+
+        console.log(tasksData)
 
         if(tasksData.length > 0) {
 
@@ -44,7 +47,6 @@ export async function fetchAllTasksToDisplay(filteredTasks = 'all') {
                     let inThreeDays = new Date()
                     inThreeDays.setDate(inThreeDays.getDate() + 3)
                     const inThreeDaysString = inThreeDays.toISOString().split('T')[0]
-                    console.log("Upcoming tasks before:", inThreeDaysString);
                     tasksData = tasksData.filter(task => formattingDateToCompare(task.dueDate) < inThreeDaysString)
                     break;
                 case 'important':
@@ -72,15 +74,11 @@ const displayTaskCards = (parentGrid, tasks) => {
     // Sorting by dates
 
     const tasksNewlyOrganized = null;
-    console.log(typeof tasks)
     if(!tasksNewlyOrganized){
         tasks.sort((a, b) =>  new Date(a.dueDate) - new Date(b.dueDate)) // because dueDate is a string
         // if nothing is passed the display is chronologically and all tasks
-    } else if (tasksNewlyOrganized === 'Today') {
-        console.log('ready t flter today tass')
     }
 
-    console.log(typeof tasks)
     tasks.forEach((task) => {
         const liTaskItem = document.createElement("li");
         liTaskItem.classList.add("task-card")
@@ -150,7 +148,8 @@ export const createNewTask = async (taskData) => {
 
         const newTask = await response.json()
         
-        console.log(`New task created ${newTask}`)
+        console.log(newTask) // Still not getting the user
+        console.log(taskData)
 
     }catch(error){
         console.log(`Error creating new task: ${error}`)
